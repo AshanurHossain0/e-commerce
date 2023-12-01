@@ -20,27 +20,32 @@ const productSchema = new mongoose.Schema({
     },
     rating:{
         type:Number,
+        default:0
     },
     price: {
         type: Number,
         required: true,
         trim:true
     },
+    availableColor:{
+        type: [String],
+        required: true,
+        trim:true,
+    },
+    // availability:{
+    //     type:Boolean,
+    //     default:true
+    // },
+    // this functionality can be handled by availableQuantity(availableQuantity=0 means not available)
     availableQuantity:{
         type:Number,
         required:true
     },
     availableSizes: {
         type: [String],
-        required: true,
         enum: ["S", "XS", "M", "X", "L", "XXL", "XL"],
         trim:true,
-        uppercase:true
-    },
-    isDeleted: {
-        type: Boolean,
-        default: false
-    },
+    }
 }, { timestamps: true });
 
 

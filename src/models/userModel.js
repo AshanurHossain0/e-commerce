@@ -24,10 +24,7 @@ const userSchema = new mongoose.Schema(
         },
         password: {
             type: String,
-            required: true,
-            minLength: 5,
-            maxLength: 15,
-            trim:true
+            required: true
         },
         orders:[{
             type:mongoose.Schema.Types.ObjectId,

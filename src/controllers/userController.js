@@ -35,8 +35,6 @@ const register = async function (req, res) {
         const saltRounds = 10;
         const hash = bcrypt.hashSync(password, saltRounds)
 
-        address = JSON.parse(address)
-
         if (!address) return res.status(400).send({ status: false, message: "Address is mandatory" })
 
         if (!address.street) return res.status(400).send({ status: false, message: "Street is mandatory" })

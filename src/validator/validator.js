@@ -27,28 +27,7 @@ const validPassword = function (password) {
     return passwordRegex.test(password)
 }
 
-const validObjectId = function (objectId) {
-    return mongoose.Types.ObjectId.isValid(objectId)
-}
-
-
-const isValidPrice = (price) => {
-    const reg = /^\d+(\.\d{1,2})?$/
-    return reg.test(price)
-}
-
-const isValidNum = (val) => {
-    const reg = /^[0-9]$/;
-    return reg.test(val)
-}
-
-const isValidAvailableSizes = function (availablesizes) {
-    if (!["S", "XS", "M", "X", "L", "XXL", "XL"].includes(availablesizes)) return false
-    return true
-};
-
-const isValidProdName = (value) => { return (/^[A-Za-z]+|[A-Za-z]+\[0-9]+$/).test(value) }
 
 
 
-module.exports = { validName, validPhone, validEmail, validPincode, validPassword, validObjectId, isValidPrice, isValidNum, isValidAvailableSizes, isValidProdName}
+module.exports = { validName, validPhone, validEmail, validPincode, validPassword}
