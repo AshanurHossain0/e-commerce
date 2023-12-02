@@ -8,6 +8,8 @@ const addToCart = async function (req, res) {
         const productId = req.params.productId;
         const { quantity } = req.body;
         if (!quantity) return res.status(400).send({ status: false, message: "Please provide product quantity" })
+
+        //taking userId from token(req.token was set in auth middleware)
         const userId = req.token.userId;
 
         if (!isValidObjectId(productId)) return res.status(400).send({ status: false, message: "Invalid product id!" });
@@ -77,6 +79,8 @@ const updateQuantity = async function (req, res) {
         const productId = req.params.productId;
         const { quantity } = req.body;
         if (!quantity) return res.status(400).send({ status: false, message: "Please provide product quantity" })
+
+        //taking userId from token(req.token was set in auth middleware)
         const userId = req.token.userId;
 
         if (!isValidObjectId(productId)) return res.status(400).send({ status: false, message: "Invalid product id!" });
@@ -99,6 +103,9 @@ const updateQuantity = async function (req, res) {
         // Find target product
         const targetItem = hasCart.items.find(item => item.productId.toString() === productId.toString())
 
+        //If the product does not exists in the cart
+        if(targetItem===undefined) return res.status(404).send({status:false,message:"The product does not exists in the cart!"})
+
         //Now check if number of quantity is available or not
         if((product.availableQuantity+targetItem.quantity)<quantity) return res.status(400).send({status:false,message:`${quantity>1?quantity:""} product unavailable`});
 
@@ -110,6 +117,54 @@ const updateQuantity = async function (req, res) {
 
         //Update Product
         await productModel.findByIdAndUpdate(productId, { $inc: { availableQuantity:targetItem.quantity-quantity} })
+
+        //send response
+        return res.status(200).send({ status: true, message: "Updation successful" })
+
+    } catch (error) {
+        return res.status(500).send({ status: false, message: error.message })
+    }
+}
+const removeItem = async function (req, res) {
+    try {
+        const productId = req.params.productId;
+
+        if (!isValidObjectId(productId)) return res.status(400).send({ status: false, message: "Invalid product id!" });
+
+        //GET product
+        const product = await productModel.findById(productId).select('price availableQuantity -_id');
+
+        if (!product) return res.status(404).send({ status: false, message: "Product not found" });
+
+        const price = product.price;
+
+        //taking userId from token(req.token was set in auth middleware)
+        const userId = req.token.userId;
+
+        //Check if user has a cart
+        let hasCart = await cartModel.findOne({ userId })
+
+        // If No cart found
+        if (!hasCart) return res.status(404).send({ status: false, message: "Cart not found!" })
+
+        //If has a cart
+
+        // Find target product
+        const targetItem = hasCart.items.find(item => item.productId.toString() === productId.toString());
+
+        //If the product does not exists in the cart
+        if(targetItem===undefined) return res.status(404).send({status:false,message:"The product does not exists in the cart!"})
+
+        //Calculate total price for Updating Cart
+        const totalPrice=hasCart.totalPrice-(targetItem.quantity*price);
+
+        //Update Cart
+        await cartModel.findOneAndUpdate({ _id: hasCart._id, "items.productId": productId }, {$pull:{items:{productId}}, $inc:{totalItems:-1} ,$set: { totalPrice } })
+
+        //Update Product
+        await productModel.findByIdAndUpdate(productId, { $inc: { availableQuantity:targetItem.quantity} })
+
+        //send response
         return res.status(200).send({ status: true, message: "Updation successful" })
 
     } catch (error) {
@@ -117,4 +172,4 @@ const updateQuantity = async function (req, res) {
     }
 }
 
-module.exports = { addToCart, getCart,updateQuantity}
+module.exports = { addToCart, getCart,updateQuantity,removeItem}

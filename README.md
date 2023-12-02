@@ -84,4 +84,9 @@
       "quantity":3
     }
   ```
+
+#### Remove item from cart
+- http://localhost:3000/cart/remove/<product_id>
+- method : PUT
+- After login the received token must be provided in Bearer Token in request header's authorization key
   
