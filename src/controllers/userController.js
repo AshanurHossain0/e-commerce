@@ -96,7 +96,7 @@ const getOrderHistory = async function (req, res) {
         const userId=req.token.userId;
 
         //get order history
-        const orderHistory = await userModel.findById(userId).select('orders -id -__v');
+        const orderHistory = await userModel.findById(userId).populate('orders').select('orders -_id');
 
         return res.status(200).send({status:true,data:orderHistory.orders})
     }

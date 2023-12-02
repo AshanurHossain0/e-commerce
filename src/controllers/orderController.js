@@ -44,7 +44,7 @@ exports.getOrder = async function (req, res) {
         if(!isValidObjectId(orderId)) return res.status(400).send({status:false,message:"Invalid order id!"})
 
         //get order
-        const order = await orderModel.findById(orderId);
+        const order = await orderModel.findById(orderId).populate('userId');
 
         if (!order) return res.status(404).send({ staus: false, message: "Order not found" });
 
