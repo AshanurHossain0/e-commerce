@@ -56,3 +56,31 @@
 #### c) Product Details
 - http://localhost:3000/product/<product_id>
 - method : GET
+  
+### d) Cart Management Route
+#### Add product to cart
+- http://localhost:3000/cart/<product_id>
+- method : POST
+- After login the received token must be provided in Bearer Token in request header's authorization key
+- Request body
+  ```yaml
+    {
+      "quantity":3
+    }
+  ```
+#### View the cart
+- http://localhost:3000/cart
+- method : GET
+- After login the received token must be provided in Bearer Token in request header's authorization key
+
+#### Update product quantity in cart
+- http://localhost:3000/cart/<product_id>
+- method : PUT
+- After login the received token must be provided in Bearer Token in request header's authorization key
+- Request body
+  ```yaml
+    {
+      "quantity":3
+    }
+  ```
+  
