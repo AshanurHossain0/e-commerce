@@ -2,6 +2,7 @@
 
 ## Steps to run project
 ### git clone "https://github.com/AshanurHossain0/e-commerce.git"
+### cd e-commerce
 ### npm install
 ### npm start
 
