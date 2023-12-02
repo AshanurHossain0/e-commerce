@@ -1,6 +1,7 @@
 const userRoute=require("./routes/userRoute")
 const productRoute=require("./routes/productRoute")
 const cartRoute=require("./routes/cartRoute")
+const orderRoute=require("./routes/orderRoute")
 
 
 const mongoose=require("mongoose");
@@ -17,6 +18,7 @@ mongoose.connect("mongodb+srv://ashanur:nurasha2000@ashanurdb.x6brlcb.mongodb.ne
 app.use("/user",userRoute);
 app.use("/product",productRoute);
 app.use("/cart",cartRoute);
+app.use("/order",orderRoute);
 
 app.use("/*",(req,res)=>res.status(404).send({status:false,message:"Invalid Path"}));
 

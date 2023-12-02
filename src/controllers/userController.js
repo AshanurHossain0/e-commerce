@@ -91,4 +91,18 @@ const login = async function (req, res) {
     }
 }
 
-module.exports = { register, login }
+const getOrderHistory = async function (req, res) {
+    try {
+        const userId=req.token.userId;
+
+        //get order history
+        const orderHistory = await userModel.findById(userId).select('orders -id -__v');
+
+        return res.status(200).send({status:true,data:orderHistory.orders})
+    }
+    catch (error) {
+        res.status(500).send({ status: false, message: error.message })
+    }
+}
+
+module.exports = { register, login,getOrderHistory }

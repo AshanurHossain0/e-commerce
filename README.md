@@ -89,4 +89,19 @@
 - http://localhost:3000/cart/remove/<product_id>
 - method : PUT
 - After login the received token must be provided in Bearer Token in request header's authorization key
-  
+
+### Order Related
+#### Order Placement
+- http://localhost:3000/order
+- method : POST
+- After login the received token must be provided in Bearer Token in request header's authorization key
+
+#### Get Order Details
+- http://localhost:3000/order/<order_id>
+- method : GET
+- After login the received token must be provided in Bearer Token in request header's authorization key
+
+#### Get Order History of an User
+- http://localhost:3000/user/orders
+- method : GET
+- After login the received token must be provided in Bearer Token in request header's authorization key
